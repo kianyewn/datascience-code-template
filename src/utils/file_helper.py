@@ -1,14 +1,32 @@
 import pathlib
+from abc import abstractmethod
 from pathlib import Path
 from typing import List
 
+from loguru import logger
+
+
+class FileHandler:
+    def __init__(self, filepath: str):
+        self.filepath = filepath
+
+    @abstractmethod
+    def remove_file(filepath: str) -> None:
+        filepath = Path(filepath)
+        # Remove the file
+        if filepath.exists() and filepath.is_file():
+            filepath.unlink()
+            logger.info(f"File {filepath} has been removed.")
+        else:
+            logger.info("File does not exist.")
+
 
 class PathParser:
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self, filepath: str):
+        self.filepath = filepath
 
     @staticmethod
-    def get_base_name_from_filepath(filepath):
+    def get_base_name_from_filepath(filepath: str) -> str:
         return Path(filepath).stem
 
     @staticmethod
@@ -23,6 +41,10 @@ class PathParser:
     def get_directory_from_filepath(filepath: str) -> pathlib.PosixPath:
         return Path(filepath).parent
 
+    @staticmethod
+    def get_path_without_extension(filepath: str) -> pathlib.PosixPath:
+        return Path(filepath).with_suffix("")
+
 
 if __name__ == "__main__":
     filepath = "/Users/kianyewngieng/github_projects/best_practice_assets/datascience-code-template/src/utils/file_helper.py"
@@ -36,5 +58,7 @@ if __name__ == "__main__":
     assert pp.get_directory_from_filepath(filepath) == Path(
         "/Users/kianyewngieng/github_projects/best_practice_assets/datascience-code-template/src/utils"
     ), pp.get_directory_from_filepath(filepath)
-    # '/Users/kianyewngieng/github_projects/best_practice_assets/datascience-code-template/src/utils'
-    # '/Users/kianyewngieng/github_projects/best_practice_assets/datascience-code-template/src/utils'
+
+    assert pp.get_path_without_extension(filepath) == Path(
+        "/Users/kianyewngieng/github_projects/best_practice_assets/datascience-code-template/src/utils/file_helper"
+    )
