@@ -1,0 +1,1 @@
+# https://stackoverflow.com/questions/16331235/typical-folder-structure-for-a-python-project-with-unit-and-integration-tests, gs: file structure for unit and integration test
