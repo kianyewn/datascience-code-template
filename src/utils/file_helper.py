@@ -16,7 +16,7 @@ class FileHandler:
         # Remove the file
         if filepath.exists() and filepath.is_file():
             filepath.unlink()
-            logger.info(f"File {filepath} has been removed.")
+            logger.info(f"Successfully removed file from `{filepath}`.")
         else:
             logger.info("File does not exist.")
 
@@ -24,6 +24,9 @@ class FileHandler:
 class PathParser:
     def __init__(self, filepath: str):
         self.filepath = filepath
+
+    def get_absolute_path(filepath:str) -> str:
+        return Path(filepath).resolve()
 
     @staticmethod
     def get_base_name_from_filepath(filepath: str) -> str:
